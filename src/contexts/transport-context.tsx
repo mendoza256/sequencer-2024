@@ -1,11 +1,16 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Transport, Draw } from "tone";
+import { Transport, TimeClass } from "tone";
+import * as Tone from "tone";
+import { TimeBaseUnit } from "tone/build/esm/core/type/TimeBase";
+import { Time } from "tone/build/esm/core/type/Units";
+import { convertTransportPositionToStep } from "../utils/transport";
 
 type TransportContextType = {
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   Transport: typeof Transport;
   toggleGlobalTransportState: () => void;
+  currentStep: Number | null;
 };
 
 const TransportContext = createContext<TransportContextType | null>(null);
@@ -18,16 +23,16 @@ export default function TransportContextProvider({
   const [isPlaying, setIsPlaying] = useState<boolean>(
     Transport.state === "started"
   );
+  const currentStepRef = useRef(null);
+  const [currentStep, setCurrentStep] = useState<number | null>(null);
 
   useEffect(() => {
     const onStart = () => {
       setIsPlaying(true);
-      console.log("started", Transport.state);
     };
 
     const onStop = () => {
       setIsPlaying(false);
-      console.log("stopped", Transport.state);
     };
 
     // Listen for "start" and "stop" events
@@ -41,21 +46,23 @@ export default function TransportContextProvider({
     };
   }, []);
 
+  Transport.scheduleRepeat((time) => {
+    Tone.Draw.schedule(() => {
+      setCurrentStep(
+        convertTransportPositionToStep(Tone.Time(time).toBarsBeatsSixteenths())
+      );
+    }, time);
+  }, "16n");
+
   Transport.bpm.value = 110;
   Transport.loopEnd = "1m";
   Transport.loop = true;
 
-  Transport.schedule((time) => {
-    console.log("time", time);
-    Draw.schedule(() => {
-      // do drawing or DOM manipulation here
-      console.log(time);
-    }, time);
-  }, "+0.5");
-
   function toggleGlobalTransportState() {
     if (Transport.state !== "started") {
-      Transport.start();
+      Tone.start().then(() => {
+        Transport.start();
+      });
     } else {
       Transport.stop();
     }
@@ -63,7 +70,13 @@ export default function TransportContextProvider({
 
   return (
     <TransportContext.Provider
-      value={{ isPlaying, setIsPlaying, Transport, toggleGlobalTransportState }}
+      value={{
+        isPlaying,
+        setIsPlaying,
+        Transport,
+        toggleGlobalTransportState,
+        currentStep,
+      }}
     >
       {children}
     </TransportContext.Provider>
