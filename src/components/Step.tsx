@@ -1,18 +1,26 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Frequency } from "tone/build/esm/core/type/Units";
-import { useTransportContext } from "../contexts/transport-context";
+import { Sequence } from "tone";
 
 type StepProps = {
   index: number;
   activeSteps: Frequency[];
   setActiveSteps: React.Dispatch<React.SetStateAction<Frequency[]>>;
   currentStep: number;
+  seqRef: React.MutableRefObject<Sequence | null>;
+  stepsRef: React.MutableRefObject<HTMLInputElement[]>;
+  lampsRef: React.MutableRefObject<HTMLInputElement[]>;
 };
 
-const Step = ({ index, activeSteps, setActiveSteps }: StepProps) => {
-  const { isPlaying, currentStep } = useTransportContext();
+const Step = ({
+  index,
+  activeSteps,
+  setActiveSteps,
+  seqRef,
+  stepsRef,
+  lampsRef,
+}: StepProps) => {
   const [note, setNote] = useState("C4");
-  const [isCurrentStep, setIsCurrentStep] = useState(currentStep === index);
   const isActive = activeSteps[index] !== 0;
 
   const handleClick = () => {
@@ -28,22 +36,47 @@ const Step = ({ index, activeSteps, setActiveSteps }: StepProps) => {
     });
   };
 
-  useEffect(() => {
-    setIsCurrentStep(isPlaying && currentStep === index);
-  }, [currentStep, index]);
-
   return (
     <div className="flex flex-col items-center">
-      <div
-        key={index}
-        className={`step ${isActive ? "active" : ""}`}
-        onClick={handleClick}
-      >
+      <label className="flex flex-col items-center">
+        <input
+          key={index}
+          id={`step-${index}`}
+          type="checkbox"
+          ref={(elm) => {
+            if (!elm) return;
+            if (!stepsRef.current[index]) {
+              stepsRef.current[index] = [];
+            }
+            stepsRef.current[index] = elm;
+          }}
+          onClick={handleClick}
+          className={`step ${isActive ? "active" : ""}`}
+        />
         <div className="step__number">{index + 1}</div>
-      </div>
-      <div className="light flex flex-col items-center justify-center">
-        <div className={`light__inner ${isCurrentStep ? "active" : ""}`}></div>
-      </div>
+      </label>
+      <label className="light flex flex-col items-center justify-center">
+        <input
+          type="radio"
+          name="lamp"
+          id={"lamp" + "-" + index}
+          disabled
+          ref={(elm) => {
+            if (!elm) return;
+            lampsRef.current[index] = elm;
+          }}
+          className={`light__inner`}
+        />
+      </label>
+      <label className="flex flex-col items-center">
+        <input
+          type="text"
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          className="step__note"
+          style={{ width: "30px" }}
+        />
+      </label>
     </div>
   );
 };
