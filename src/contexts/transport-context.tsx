@@ -1,16 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Transport, TimeClass } from "tone";
+import { Transport } from "tone";
 import * as Tone from "tone";
-import { TimeBaseUnit } from "tone/build/esm/core/type/TimeBase";
-import { Time } from "tone/build/esm/core/type/Units";
-import { convertTransportPositionToStep } from "../utils/transport";
 
 type TransportContextType = {
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   Transport: typeof Transport;
   toggleGlobalTransportState: () => void;
-  currentStep: Number | null;
 };
 
 const TransportContext = createContext<TransportContextType | null>(null);
@@ -23,8 +19,9 @@ export default function TransportContextProvider({
   const [isPlaying, setIsPlaying] = useState<boolean>(
     Transport.state === "started"
   );
-  const currentStepRef = useRef(null);
-  const [currentStep, setCurrentStep] = useState<number | null>(null);
+  Transport.bpm.value = 110;
+  Transport.loopEnd = "1m";
+  Transport.loop = true;
 
   useEffect(() => {
     const onStart = () => {
@@ -46,18 +43,6 @@ export default function TransportContextProvider({
     };
   }, []);
 
-  Transport.scheduleRepeat((time) => {
-    Tone.Draw.schedule(() => {
-      setCurrentStep(
-        convertTransportPositionToStep(Tone.Time(time).toBarsBeatsSixteenths())
-      );
-    }, time);
-  }, "16n");
-
-  Transport.bpm.value = 110;
-  Transport.loopEnd = "1m";
-  Transport.loop = true;
-
   function toggleGlobalTransportState() {
     if (Transport.state !== "started") {
       Tone.start().then(() => {
@@ -75,7 +60,6 @@ export default function TransportContextProvider({
         setIsPlaying,
         Transport,
         toggleGlobalTransportState,
-        currentStep,
       }}
     >
       {children}
