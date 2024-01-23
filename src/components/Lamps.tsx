@@ -28,7 +28,7 @@ const Lamps = ({ lampsRef }: LampsProps) => {
   return (
     <div className="flex items-center justify-between gap-4">
       {stepIds.map((_, i) => (
-        <div className="flex flex-col">
+        <div className="flex flex-col" key={i}>
           <label className="light seq-element relative">
             <input
               type="radio"

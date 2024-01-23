@@ -15,8 +15,10 @@ const Track = ({ note }: TrackProps) => {
   );
   const synth = useRef<Synth<SynthOptions> | null>(null);
   const [activeSteps, setActiveSteps] = useState(initialActiveSteps);
+  const stepsRefString = sessionStorage.getItem("stepsRef");
+  const stepsRefArray = JSON.parse(stepsRefString);
   const seqRef = useRef<Sequence | null>(null);
-  const stepsRef = useRef<HTMLInputElement[]>([]);
+  const stepsRef = useRef<HTMLInputElement[]>(stepsRefArray || []);
 
   const stepIds = [...Array(STEPS).keys()] as const;
 
@@ -29,6 +31,17 @@ const Track = ({ note }: TrackProps) => {
     synth.current.volume.value = -12;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    // Extract values from the array
+    const inputValues = stepsRef.current.map((inputRef) => inputRef.value);
+
+    // Convert the array of values to a JSON string
+    const inputValuesString = JSON.stringify(inputValues);
+
+    // Store the JSON string in sessionStorage
+    sessionStorage.setItem("stepsRef", inputValuesString);
+  }, [stepsRef.current]);
 
   useEffect(() => {
     seqRef.current = new Sequence(

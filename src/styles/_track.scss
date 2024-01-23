@@ -16,8 +16,8 @@
   .step {
     border-radius: 50%;
     background-color: transparent;
-    color: #646cff;
-    border: 1px solid #646cff;
+    color: $purple-500;
+    border: 1px solid $purple-500;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,14 +27,14 @@
     transition: all 0.1s ease-in-out;
 
     &.downbeat {
-      border: 2px solid #646cff;
+      border: 2px solid $purple-500;
       color: #ffffff;
     }
 
     &.active {
-      background-color: #646cff;
+      background-color: $purple-500;
       color: #ffffff;
-      box-shadow: 0 0 8px #646cff;
+      box-shadow: 0 0 8px $purple-500;
     }
 
     &:hover {

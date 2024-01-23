@@ -1,12 +1,13 @@
 import TransportSection from "../components/TransportSection";
 import Track from "../components/Track";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Lamps from "../components/Lamps";
 import { Destination, Reverb } from "tone";
 
 const Sequencer = () => {
   const lampsRef = useRef<HTMLInputElement[]>([]);
-  const scale = ["C4", "B3", "A3", "G3", "F3", "E3", "D3", "C3"];
+  const initialScale = ["C4", "B3", "A3", "G3", "F3", "E3", "D3", "C3"];
+  const [scale, setScale] = useState<string[]>(initialScale);
   // const reverb = useRef<Reverb | null>(null);
 
   // useEffect(() => {
@@ -24,7 +25,7 @@ const Sequencer = () => {
         <Track key={note} note={note} />
       ))}
       <Lamps lampsRef={lampsRef} />
-      <TransportSection />
+      <TransportSection setScale={setScale} />
     </>
   );
 };
