@@ -3,7 +3,11 @@ import Step from "./Step";
 import { Sequence, Synth, SynthOptions } from "tone";
 import { Frequency } from "tone/build/esm/core/type/Units";
 
-const Track = () => {
+type TrackProps = {
+  note: Frequency;
+};
+
+const Track = ({ note }: TrackProps) => {
   const STEPS = 16;
   const initialActiveSteps: Frequency[] = Array.from(
     { length: STEPS },
@@ -13,7 +17,6 @@ const Track = () => {
   const [activeSteps, setActiveSteps] = useState(initialActiveSteps);
   const seqRef = useRef<Sequence | null>(null);
   const stepsRef = useRef<HTMLInputElement[]>([]);
-  const lampsRef = useRef<HTMLInputElement[]>([]);
 
   const stepIds = [...Array(STEPS).keys()] as const;
 
@@ -33,7 +36,6 @@ const Track = () => {
         if (stepsRef.current[step]?.checked) {
           synth.current?.triggerAttackRelease(activeSteps[step], 0.1, time);
         }
-        lampsRef.current[step].checked = true;
       },
       [stepIds],
       "1m"
@@ -45,6 +47,19 @@ const Track = () => {
     };
   }, [activeSteps]);
 
+  const handleClick = (index: number, isActive: boolean) => {
+    setActiveSteps((prev) => {
+      const newArr = [...prev];
+      if (isActive) {
+        newArr[index] = 0;
+      } else {
+        newArr[index] = note;
+      }
+
+      return newArr as Frequency[];
+    });
+  };
+
   return (
     <div className="track">
       {[...Array(STEPS)].map((_, i) => (
@@ -52,13 +67,11 @@ const Track = () => {
           key={i}
           index={i}
           activeSteps={activeSteps}
-          setActiveSteps={setActiveSteps}
-          seqRef={seqRef}
           stepsRef={stepsRef}
-          lampsRef={lampsRef}
+          handleClick={handleClick}
         />
       ))}
-      <button onClick={clearSequence}>Clear</button>
+      {/* <button onClick={clearSequence}>Clear</button> */}
     </div>
   );
 };
