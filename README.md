@@ -1,30 +1,33 @@
-# React + TypeScript + Vite
+# Sequencer Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains the source code for a Sequencer application built with React and Tone.js.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The Sequencer application is a music sequencer that allows users to create and manipulate sequences of musical notes. It uses the Tone.js library for audio synthesis and manipulation.
 
-## Expanding the ESLint configuration
+## Main Components
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Sequencer: This is the main component of the application. It maps over a scale of musical notes and creates a Track component for each note. It also includes a Lamps component and a TransportSection component.
 
-- Configure the top-level `parserOptions` property like this:
+Track: This component represents a single track of the sequencer, corresponding to a specific musical note.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+Lamps: This component is used to display the status of the sequencer.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+TransportSection: This component contains controls for starting, stopping, and manipulating the sequencer.
+
+## Setup
+
+To set up the application, clone the repository and install the dependencies with npm install. Then, start the application with npm start.
+
+## Usage
+
+To use the sequencer, select a note from the track and adjust the settings in the transport section as desired. The sequencer will play the sequence of notes according to the settings.
+
+## Contributing
+
+Contributions are welcome. Please submit a pull request with any improvements or bug fixes.
+
+## License
+
+This project is licensed under the MIT License.
