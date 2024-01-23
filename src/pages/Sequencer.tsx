@@ -1,13 +1,30 @@
 import TransportSection from "../components/TransportSection";
 import Track from "../components/Track";
-import TransportTest from "../components/TransportTest";
+import { useEffect, useRef } from "react";
+import Lamps from "../components/Lamps";
+import { Destination, Reverb } from "tone";
 
 const Sequencer = () => {
+  const lampsRef = useRef<HTMLInputElement[]>([]);
+  const scale = ["C4", "B3", "A3", "G3", "F3", "E3", "D3", "C3"];
+  // const reverb = useRef<Reverb | null>(null);
+
+  // useEffect(() => {
+  //   reverb.current = new Reverb({
+  //     decay: 10,
+  //     wet: 0.5,
+  //   }).toDestination();
+  //   Destination.volume.value = -12;
+  //   Destination.chain(reverb.current, Destination.volume);
+  // }, []);
+
   return (
     <>
-      <Track />
+      {scale.map((note) => (
+        <Track key={note} note={note} />
+      ))}
+      <Lamps lampsRef={lampsRef} />
       <TransportSection />
-      {/* <TransportTest /> */}
     </>
   );
 };

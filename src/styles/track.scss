@@ -1,12 +1,19 @@
+.seq-element {
+  width: 2rem;
+  height: 2rem;
+}
+
 .track {
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
   gap: 1rem;
 
+  input.step {
+    visibility: hidden;
+  }
+
   .step {
-    width: 2rem;
-    height: 2rem;
     border-radius: 50%;
     background-color: transparent;
     color: #646cff;
@@ -17,31 +24,49 @@
     font-weight: 500;
     cursor: pointer;
     user-select: none;
-    transition: transform 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+
+    &.downbeat {
+      border: 2px solid #646cff;
+      color: #ffffff;
+    }
 
     &.active {
       background-color: #646cff;
       color: #ffffff;
+      box-shadow: 0 0 8px #646cff;
     }
 
     &:hover {
-      transform: scale(1.05);
+      transform: scale(1.045);
     }
   }
+}
 
-  .light {
+.light {
+  .light__inner {
+    border-radius: 50%;
+    background-color: #ffffff50;
     width: 2rem;
     height: 2rem;
+  }
 
-    .light__inner {
-      width: 0.75rem;
-      height: 0.75rem;
-      border-radius: 50%;
-      background-color: #ffffff97;
+  input.light__inner {
+    visibility: hidden;
 
-      &.active {
-        background-color: #787ffc;
-        box-shadow: 0 0 10px #9398f9;
+    &:checked {
+      & + .light__inner {
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          background-color: #ffffffac;
+          box-shadow: 0 0 10px #9398f9;
+        }
       }
     }
   }

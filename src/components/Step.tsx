@@ -1,43 +1,23 @@
-import { useState } from "react";
 import { Frequency } from "tone/build/esm/core/type/Units";
-import { Sequence } from "tone";
 
 type StepProps = {
   index: number;
   activeSteps: Frequency[];
-  setActiveSteps: React.Dispatch<React.SetStateAction<Frequency[]>>;
-  currentStep: number;
-  seqRef: React.MutableRefObject<Sequence | null>;
   stepsRef: React.MutableRefObject<HTMLInputElement[]>;
-  lampsRef: React.MutableRefObject<HTMLInputElement[]>;
+  handleClick: (
+    index: number,
+    isActive: boolean
+  ) => React.Dispatch<React.SetStateAction<Frequency[]>>;
 };
 
-const Step = ({
-  index,
-  activeSteps,
-  setActiveSteps,
-  seqRef,
-  stepsRef,
-  lampsRef,
-}: StepProps) => {
-  const [note, setNote] = useState("C4");
+const Step = ({ index, activeSteps, stepsRef, handleClick }: StepProps) => {
   const isActive = activeSteps[index] !== 0;
-
-  const handleClick = () => {
-    setActiveSteps((prev) => {
-      const newArr = [...prev];
-      if (isActive) {
-        newArr[index] = 0;
-      } else {
-        newArr[index] = note;
-      }
-
-      return newArr;
-    });
-  };
+  function checkIf0rDivisibleBy4(num: number) {
+    return num === 0 || num % 4 === 0;
+  }
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center relative">
       <label className="flex flex-col items-center">
         <input
           key={index}
@@ -46,36 +26,18 @@ const Step = ({
           ref={(elm) => {
             if (!elm) return;
             if (!stepsRef.current[index]) {
-              stepsRef.current[index] = [];
+              stepsRef.current[index] = [] as unknown as HTMLInputElement;
             }
             stepsRef.current[index] = elm;
           }}
-          onClick={handleClick}
-          className={`step ${isActive ? "active" : ""}`}
+          onClick={() => handleClick(index, isActive)}
+          className={`step seq-element ${isActive ? "active" : ""} absolute`}
         />
-        <div className="step__number">{index + 1}</div>
-      </label>
-      <label className="light flex flex-col items-center justify-center">
-        <input
-          type="radio"
-          name="lamp"
-          id={"lamp" + "-" + index}
-          disabled
-          ref={(elm) => {
-            if (!elm) return;
-            lampsRef.current[index] = elm;
-          }}
-          className={`light__inner`}
-        />
-      </label>
-      <label className="flex flex-col items-center">
-        <input
-          type="text"
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          className="step__note"
-          style={{ width: "30px" }}
-        />
+        <div
+          className={`step seq-element ${isActive ? "active" : ""} ${
+            checkIf0rDivisibleBy4(index) ? "downbeat" : ""
+          }`}
+        ></div>
       </label>
     </div>
   );
