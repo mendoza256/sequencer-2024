@@ -1,0 +1,33 @@
+.play-pause-btn {
+  min-width: 6rem;
+}
+
+.bpm-value {
+  min-width: 2rem;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 1rem;
+  background: $purple-500;
+  outline: none;
+  opacity: 0.7;
+  border-radius: 1rem;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  color: white;
+
+  &::-webkit-slider-thumb,
+  &::-moz-range-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    background-color: $purple-500;
+    cursor: pointer;
+    border-radius: 50%;
+    color: white;
+    border: 2px solid $white;
+  }
+}

@@ -2,22 +2,26 @@ import { useEffect, useRef, useState } from "react";
 import Step from "./Step";
 import { Sequence, Synth, SynthOptions } from "tone";
 import { Frequency } from "tone/build/esm/core/type/Units";
+import { useSequenceContext } from "../contexts/sequence-context";
 
 type TrackProps = {
   note: Frequency;
+  index: number
 };
 
-const Track = ({ note }: TrackProps) => {
+const Track = ({ note, index }: TrackProps) => {
   const STEPS = 16;
+  const { setSequenceStore } = useSequenceContext();
   const initialActiveSteps: Frequency[] = Array.from(
     { length: STEPS },
     () => 0
   );
   const synth = useRef<Synth<SynthOptions> | null>(null);
   const [activeSteps, setActiveSteps] = useState(initialActiveSteps);
+  const stepsRefString = sessionStorage.getItem("stepsRef");
+  const stepsRefArray = JSON.parse(stepsRefString || "[]");
   const seqRef = useRef<Sequence | null>(null);
-  const stepsRef = useRef<HTMLInputElement[]>([]);
-
+  const stepsRef = useRef<HTMLInputElement[]>(stepsRefArray || []);
   const stepIds = [...Array(STEPS).keys()] as const;
 
   function clearSequence() {
@@ -29,6 +33,11 @@ const Track = ({ note }: TrackProps) => {
     synth.current.volume.value = -12;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    // TODO make sequence store work
+    setSequenceStore((prev) => prev[index]stepsRef.current);
+  }, [stepsRef.current]);
 
   useEffect(() => {
     seqRef.current = new Sequence(

@@ -22,11 +22,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: $purple-500;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: $purple-600;
 }
 
 body {
@@ -49,12 +49,12 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: $black;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: $purple-500;
 }
 button:focus,
 button:focus-visible {
@@ -63,13 +63,13 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: $purple-600;
+    background-color: $white;
   }
   a:hover {
-    color: #747bff;
+    color: $purple-400;
   }
   button {
-    background-color: #f9f9f9;
+    background-color: $white;
   }
 }
