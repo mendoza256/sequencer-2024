@@ -24,6 +24,7 @@ export default function TransportContextProvider({
   Transport.swing = 0.0;
   Transport.swingSubdivision = "16n";
   Transport.loop = true;
+  Tone.Destination.volume.value = -10;
 
   useEffect(() => {
     const onStart = () => {

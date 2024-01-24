@@ -2,42 +2,39 @@ import { useEffect, useRef, useState } from "react";
 import Step from "./Step";
 import { Sequence, Synth, SynthOptions } from "tone";
 import { Frequency } from "tone/build/esm/core/type/Units";
-import { useSequenceContext } from "../contexts/sequence-context";
+import { useSessionStorage } from "../hooks/useSessionStorage";
 
 type TrackProps = {
   note: Frequency;
-  index: number
+  rowIndex: number;
 };
 
-const Track = ({ note, index }: TrackProps) => {
+const Track = ({ note, rowIndex }: TrackProps) => {
   const STEPS = 16;
-  const { setSequenceStore } = useSequenceContext();
   const initialActiveSteps: Frequency[] = Array.from(
     { length: STEPS },
     () => 0
   );
-  const synth = useRef<Synth<SynthOptions> | null>(null);
   const [activeSteps, setActiveSteps] = useState(initialActiveSteps);
-  const stepsRefString = sessionStorage.getItem("stepsRef");
-  const stepsRefArray = JSON.parse(stepsRefString || "[]");
+  const [storedValue, setStoredValue] = useSessionStorage("sequence", []);
+  const synth = useRef<Synth<SynthOptions> | null>(null);
   const seqRef = useRef<Sequence | null>(null);
-  const stepsRef = useRef<HTMLInputElement[]>(stepsRefArray || []);
-  const stepIds = [...Array(STEPS).keys()] as const;
+  const stepsRef = useRef<HTMLInputElement[]>(storedValue || []);
+  const stepIds = [...Array(STEPS).keys()];
 
-  function clearSequence() {
-    setActiveSteps(initialActiveSteps);
+  function clearRow() {
+    setActiveSteps((prev) => {
+      const newArr = [...prev];
+      newArr.fill(0);
+      return newArr as Frequency[];
+    });
   }
 
   useEffect(() => {
     synth.current = new Synth().toDestination();
-    synth.current.volume.value = -12;
+    console.log("storedValue", storedValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    // TODO make sequence store work
-    setSequenceStore((prev) => prev[index]stepsRef.current);
-  }, [stepsRef.current]);
 
   useEffect(() => {
     seqRef.current = new Sequence(
@@ -54,6 +51,7 @@ const Track = ({ note, index }: TrackProps) => {
     return () => {
       seqRef.current?.dispose();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSteps]);
 
   const handleClick = (index: number, isActive: boolean) => {
@@ -80,7 +78,7 @@ const Track = ({ note, index }: TrackProps) => {
           handleClick={handleClick}
         />
       ))}
-      {/* <button onClick={clearSequence}>Clear</button> */}
+      <button onClick={clearRow}>Clear</button>
     </div>
   );
 };
