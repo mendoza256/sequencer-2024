@@ -2,13 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import Step from "./Step";
 import { Sequence, Synth, SynthOptions } from "tone";
 import { Frequency } from "tone/build/esm/core/type/Units";
+import { useSequenceContext } from "../contexts/sequence-context";
 
 type TrackProps = {
   note: Frequency;
+  index: number
 };
 
-const Track = ({ note }: TrackProps) => {
+const Track = ({ note, index }: TrackProps) => {
   const STEPS = 16;
+  const { setSequenceStore } = useSequenceContext();
   const initialActiveSteps: Frequency[] = Array.from(
     { length: STEPS },
     () => 0
@@ -16,10 +19,9 @@ const Track = ({ note }: TrackProps) => {
   const synth = useRef<Synth<SynthOptions> | null>(null);
   const [activeSteps, setActiveSteps] = useState(initialActiveSteps);
   const stepsRefString = sessionStorage.getItem("stepsRef");
-  const stepsRefArray = JSON.parse(stepsRefString);
+  const stepsRefArray = JSON.parse(stepsRefString || "[]");
   const seqRef = useRef<Sequence | null>(null);
   const stepsRef = useRef<HTMLInputElement[]>(stepsRefArray || []);
-
   const stepIds = [...Array(STEPS).keys()] as const;
 
   function clearSequence() {
@@ -33,14 +35,8 @@ const Track = ({ note }: TrackProps) => {
   }, []);
 
   useEffect(() => {
-    // Extract values from the array
-    const inputValues = stepsRef.current.map((inputRef) => inputRef.value);
-
-    // Convert the array of values to a JSON string
-    const inputValuesString = JSON.stringify(inputValues);
-
-    // Store the JSON string in sessionStorage
-    sessionStorage.setItem("stepsRef", inputValuesString);
+    // TODO make sequence store work
+    setSequenceStore((prev) => prev[index]stepsRef.current);
   }, [stepsRef.current]);
 
   useEffect(() => {
