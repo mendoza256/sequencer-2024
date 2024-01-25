@@ -3,36 +3,49 @@ import Step from "./Step";
 import { Sequence, Synth, SynthOptions } from "tone";
 import { Frequency } from "tone/build/esm/core/type/Units";
 import { useSessionStorage } from "../hooks/useSessionStorage";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { FrequencyOrNull } from "../utils/baseTypes";
 
 type TrackProps = {
-  note: Frequency;
+  note: FrequencyOrNull;
   rowIndex: number;
 };
 
 const Track = ({ note, rowIndex }: TrackProps) => {
   const STEPS = 16;
-  const initialActiveSteps: Frequency[] = Array.from(
+  const initialActiveSteps: FrequencyOrNull[] = Array.from(
     { length: STEPS },
-    () => 0
+    () => null
   );
-  const [activeSteps, setActiveSteps] = useState(initialActiveSteps);
-  const [storedValue, setStoredValue] = useSessionStorage("sequence", []);
+  const [storedValue, setStoredValue] = useSessionStorage(
+    `seq-${rowIndex}`,
+    []
+  );
+  const [activeSteps, setActiveSteps] = useState(
+    storedValue || initialActiveSteps
+  );
   const synth = useRef<Synth<SynthOptions> | null>(null);
   const seqRef = useRef<Sequence | null>(null);
-  const stepsRef = useRef<HTMLInputElement[]>(storedValue || []);
+  const stepsRef = useRef<HTMLInputElement[]>([]);
   const stepIds = [...Array(STEPS).keys()];
 
   function clearRow() {
-    setActiveSteps((prev) => {
+    setActiveSteps((prev: FrequencyOrNull[]) => {
       const newArr = [...prev];
-      newArr.fill(0);
+      newArr.fill(null);
+
+      setStoredValue(newArr);
+
       return newArr as Frequency[];
+    });
+    stepsRef.current.forEach((step) => {
+      step.checked = false;
     });
   }
 
   useEffect(() => {
     synth.current = new Synth().toDestination();
-    console.log("storedValue", storedValue);
+    // console.log("storedValue", storedValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -41,6 +54,7 @@ const Track = ({ note, rowIndex }: TrackProps) => {
       (time, step) => {
         if (stepsRef.current[step]?.checked) {
           synth.current?.triggerAttackRelease(activeSteps[step], 0.1, time);
+          console.log("sequence", stepsRef.current);
         }
       },
       [stepIds],
@@ -52,10 +66,10 @@ const Track = ({ note, rowIndex }: TrackProps) => {
       seqRef.current?.dispose();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeSteps]);
+  }, [seqRef.current, activeSteps]);
 
   const handleClick = (index: number, isActive: boolean) => {
-    setActiveSteps((prev) => {
+    setActiveSteps((prev: FrequencyOrNull[]) => {
       const newArr = [...prev];
       if (isActive) {
         newArr[index] = 0;
@@ -63,12 +77,13 @@ const Track = ({ note, rowIndex }: TrackProps) => {
         newArr[index] = note;
       }
 
-      return newArr as Frequency[];
+      setStoredValue(newArr);
+      return newArr as FrequencyOrNull[];
     });
   };
 
   return (
-    <div className="track">
+    <div className="track relative">
       {[...Array(STEPS)].map((_, i) => (
         <Step
           key={i}
@@ -78,7 +93,15 @@ const Track = ({ note, rowIndex }: TrackProps) => {
           handleClick={handleClick}
         />
       ))}
-      <button onClick={clearRow}>Clear</button>
+      <div
+        role="button"
+        tabIndex={0}
+        className="flex flex-col items-center relative seq-element clear-button relative"
+        onClick={clearRow}
+      >
+        <RemoveIcon />
+        <div className={`clear-icon-overlay absolute seq-element `}></div>
+      </div>
     </div>
   );
 };

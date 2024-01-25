@@ -71,3 +71,23 @@
     }
   }
 }
+
+.clear-button {
+  cursor: pointer;
+  padding: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background-color: $black;
+
+  svg {
+    transition: all 0.2s ease-in-out;
+    opacity: 0;
+  }
+
+  &:hover {
+    svg {
+      opacity: 1;
+    }
+  }
+}
