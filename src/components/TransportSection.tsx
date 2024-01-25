@@ -56,10 +56,10 @@ const TransportSection = () => {
         <input
           type="range"
           min={0}
-          max={1}
+          max={0.4}
           step={0.01}
           onChange={handleVolumeChange}
-          defaultValue={1}
+          defaultValue={0.4}
         />
       </label>
     </div>
