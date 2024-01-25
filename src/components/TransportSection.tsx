@@ -33,7 +33,7 @@ const TransportSection = () => {
         <span className="bpm-value mr-2">{bpmValue}</span>
         <input
           type="range"
-          min={30}
+          min={60}
           max={180}
           step={1}
           onChange={handleBpmChange}
