@@ -8,11 +8,11 @@ type LampsProps = {
 const Lamps = ({ lampsRef }: LampsProps) => {
   const STEPS = 16;
   const seqRef = useRef<Sequence | null>(null);
-  const stepIds = [...Array(STEPS).keys()] as const;
+  const stepIds = [...Array(STEPS).keys()];
 
   useEffect(() => {
     seqRef.current = new Sequence(
-      (time, step) => {
+      (_time, step) => {
         lampsRef.current[step].checked = true;
       },
       [stepIds],
@@ -23,10 +23,11 @@ const Lamps = ({ lampsRef }: LampsProps) => {
     return () => {
       seqRef.current?.dispose();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stepIds]);
 
   return (
-    <div className="flex items-center justify-between gap-4">
+    <div className="flex items-center justify-between gap-4 mr-12">
       {stepIds.map((_, i) => (
         <div className="flex flex-col" key={i}>
           <label className="light seq-element relative">

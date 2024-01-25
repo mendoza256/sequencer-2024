@@ -9,7 +9,6 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import SequenceContextProvider from "./contexts/sequence-context.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(<Route path="/" element={<App />}></Route>)
@@ -18,9 +17,7 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <TransportContextProvider>
-      <SequenceContextProvider>
-        <RouterProvider router={router} />
-      </SequenceContextProvider>
+      <RouterProvider router={router} />
     </TransportContextProvider>
   </React.StrictMode>
 );

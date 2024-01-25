@@ -1,33 +1,21 @@
 import TransportSection from "../components/TransportSection";
 import Track from "../components/Track";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Lamps from "../components/Lamps";
-import { Destination, Reverb } from "tone";
-import { useSequenceContext } from "../contexts/sequence-context";
 
 const Sequencer = () => {
   const lampsRef = useRef<HTMLInputElement[]>([]);
-  const initialScale = ["C4", "B3", "A3", "G3", "F3", "E3", "D3", "C3"];
-  const [scale, setScale] = useState<string[]>(initialScale);
-  // const reverb = useRef<Reverb | null>(null);
-  const { sequenceStore } = useSequenceContext();
-
-  // useEffect(() => {
-  //   reverb.current = new Reverb({
-  //     decay: 10,
-  //     wet: 0.5,
-  //   }).toDestination();
-  //   Destination.volume.value = -12;
-  //   Destination.chain(reverb.current, Destination.volume);
-  // }, []);
+  const initialScale = ["C5", "B4", "A4", "G4", "F4", "E4", "D4", "C4"];
+  // const [scale, setScale] = useState<string[]>(initialScale);
+  const scale = initialScale;
 
   return (
     <>
       {scale.map((note, index) => (
-        <Track key={index} note={note} index={index} />
+        <Track key={index} note={note} rowIndex={index} />
       ))}
       <Lamps lampsRef={lampsRef} />
-      <TransportSection setScale={setScale} />
+      <TransportSection />
     </>
   );
 };

@@ -4,14 +4,11 @@ type StepProps = {
   index: number;
   activeSteps: Frequency[];
   stepsRef: React.MutableRefObject<HTMLInputElement[]>;
-  handleClick: (
-    index: number,
-    isActive: boolean
-  ) => React.Dispatch<React.SetStateAction<Frequency[]>>;
+  handleClick: (index: number, isActive: boolean) => void;
 };
 
 const Step = ({ index, activeSteps, stepsRef, handleClick }: StepProps) => {
-  const isActive = activeSteps[index] !== 0;
+  const isActive = !!activeSteps[index];
   function checkIf0rDivisibleBy4(num: number) {
     return num === 0 || num % 4 === 0;
   }
@@ -31,7 +28,8 @@ const Step = ({ index, activeSteps, stepsRef, handleClick }: StepProps) => {
             stepsRef.current[index] = elm;
           }}
           onClick={() => handleClick(index, isActive)}
-          className={`step seq-element ${isActive ? "active" : ""} absolute`}
+          className={`step seq-element absolute`}
+          checked={isActive}
         />
         <div
           className={`step seq-element ${isActive ? "active" : ""} ${
