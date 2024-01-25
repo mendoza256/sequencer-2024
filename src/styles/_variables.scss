@@ -17,3 +17,9 @@ $large-desktop: 1280px;
     @content;
   }
 }
+
+@mixin until-tablet {
+  @media (max-width: $tablet - 1px) {
+    @content;
+  }
+}

@@ -3,7 +3,6 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
@@ -26,6 +25,11 @@
     padding: 0;
     max-width: 100vw;
     max-height: 100vh;
+    min-width: 840px;
+  }
+
+  @include until-tablet {
+    transform: rotate(90deg) translate(40%, 60%);
   }
 }
 
@@ -72,17 +76,4 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: $purple-600;
-    background-color: $white;
-  }
-  a:hover {
-    color: $purple-400;
-  }
-  button {
-    background-color: $white;
-  }
 }
