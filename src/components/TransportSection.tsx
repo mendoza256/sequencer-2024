@@ -1,12 +1,10 @@
 import { Destination, Transport, gainToDb } from "tone";
 import { useTransportContext } from "../contexts/transport-context";
 import { useState } from "react";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
 
-type TransportSectionProps = {
-  setScale: React.Dispatch<React.SetStateAction<string[]>>;
-};
-
-const TransportSection = ({ setScale }: TransportSectionProps) => {
+const TransportSection = () => {
   const { isPlaying, toggleGlobalTransportState } = useTransportContext();
   const [bpmValue, setBpmValue] = useState(Math.floor(Transport.bpm.value));
 
@@ -26,20 +24,16 @@ const TransportSection = ({ setScale }: TransportSectionProps) => {
     Transport.swing = Number(e.target.value);
   };
 
-  // const setScale = (scale: string[]) => {
-  //   setScale(scale);
-  // };
-
   return (
-    <div className="transport-section flex justify-between items-center mt-4">
+    <div className="transport-section flex justify-between items-center mt-4 mr-12">
       <button className="play-pause-btn" onClick={handlePlay}>
-        {isPlaying ? "Stop" : "Play"}
+        {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
       </button>
       <label className="flex justify-between items-center">
         <span className="bpm-value mr-2">{bpmValue}</span>
         <input
           type="range"
-          min={30}
+          min={60}
           max={180}
           step={1}
           onChange={handleBpmChange}

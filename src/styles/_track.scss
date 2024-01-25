@@ -1,6 +1,8 @@
 .seq-element {
   width: 2rem;
   height: 2rem;
+  min-width: 2rem;
+  min-height: 2rem;
 }
 
 .track {
@@ -68,6 +70,26 @@
           box-shadow: 0 0 10px #9398f9;
         }
       }
+    }
+  }
+}
+
+.clear-button {
+  cursor: pointer;
+  padding: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background-color: $black;
+
+  svg {
+    transition: all 0.2s ease-in-out;
+    opacity: 0;
+  }
+
+  &:hover {
+    svg {
+      opacity: 1;
     }
   }
 }
