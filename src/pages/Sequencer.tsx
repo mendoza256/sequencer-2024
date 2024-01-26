@@ -3,26 +3,38 @@ import Track from "../components/Track";
 import { useEffect, useState } from "react";
 import Lamps from "../components/Lamps";
 import { useMediaQuery } from "../hooks/useMediaQuery";
+import scales from "../utils/scales";
 
 const Sequencer = () => {
-  const initialScale = ["C5", "B4", "A4", "G4", "F4", "E4", "D4", "C4"];
-  const [scale, setScale] = useState<null | string[]>(null);
+  const [scale, setScale] = useState<string[]>(scales.CMajor);
   const isTablet = useMediaQuery("(max-width: 1023px)");
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   useEffect(() => {
     if (isMobile) {
-      setScale(initialScale.slice(0, 4));
+      setScale(scale.slice(0, 4));
     } else if (isTablet) {
-      setScale(initialScale.slice(0, 6));
+      setScale(scale.slice(0, 6));
     } else {
-      setScale(initialScale);
+      setScale(scale);
     }
+    console.log("scale", scale);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile]);
+  }, [scale, isTablet, isMobile]);
+
+  function onScaleChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const selectedScale = e.target.value;
+
+    setScale(scales[selectedScale]);
+  }
 
   return (
     <>
+      <select onChange={onScaleChange}>
+        {Object.keys(scales).map((scale) => (
+          <option key={scale}>{scale}</option>
+        ))}
+      </select>
       {scale?.map((note, index) => (
         <Track key={index} note={note} rowIndex={index} />
       ))}

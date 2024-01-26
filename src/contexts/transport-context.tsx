@@ -32,7 +32,6 @@ export default function TransportContextProvider({
       setIsPlaying(false);
     };
 
-    // Listen for "start" and "stop" events
     Transport.on("start", onStart);
     Transport.on("stop", onStop);
 

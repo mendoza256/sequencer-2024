@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Step from "./Step";
-import { Sequence, Synth, SynthOptions } from "tone";
+import { Reverb, Sequence, Synth, SynthOptions } from "tone";
 import { Frequency } from "tone/build/esm/core/type/Units";
 import { useSessionStorage } from "../hooks/useSessionStorage";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -25,6 +25,7 @@ const Track = ({ note, rowIndex }: TrackProps) => {
     storedValue || initialActiveSteps
   );
   const synth = useRef<Synth<SynthOptions> | null>(null);
+  const reverb = useRef<Reverb | null>(null);
   const seqRef = useRef<Sequence | null>(null);
   const stepsRef = useRef<HTMLInputElement[]>([]);
   const stepIds = [...Array(STEPS).keys()];
@@ -45,6 +46,11 @@ const Track = ({ note, rowIndex }: TrackProps) => {
 
   useEffect(() => {
     synth.current = new Synth().toDestination();
+    reverb.current = new Reverb(2).toDestination();
+    synth.current.connect(reverb.current);
+
+    reverb.current.generate();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
