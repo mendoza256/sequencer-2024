@@ -19,12 +19,9 @@ export default function TransportContextProvider({
   const [isPlaying, setIsPlaying] = useState<boolean>(
     Transport.state === "started"
   );
-  Transport.bpm.value = 110;
   Transport.loopEnd = "1m";
-  Transport.swing = 0.0;
   Transport.swingSubdivision = "16n";
   Transport.loop = true;
-  Tone.Destination.volume.value = -10;
 
   useEffect(() => {
     const onStart = () => {
