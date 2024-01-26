@@ -1,12 +1,16 @@
 import { Destination, Transport, gainToDb } from "tone";
 import { useTransportContext } from "../contexts/transport-context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 
 const TransportSection = () => {
   const { isPlaying, toggleGlobalTransportState } = useTransportContext();
   const [bpmValue, setBpmValue] = useState(Math.floor(Transport.bpm.value));
+
+  useEffect(() => {
+    Destination.volume.value = gainToDb(0.4);
+  }, []);
 
   const handlePlay = () => {
     toggleGlobalTransportState();

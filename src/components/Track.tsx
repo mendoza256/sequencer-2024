@@ -45,7 +45,6 @@ const Track = ({ note, rowIndex }: TrackProps) => {
 
   useEffect(() => {
     synth.current = new Synth().toDestination();
-    // console.log("storedValue", storedValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -54,7 +53,6 @@ const Track = ({ note, rowIndex }: TrackProps) => {
       (time, step) => {
         if (stepsRef.current[step]?.checked) {
           synth.current?.triggerAttackRelease(activeSteps[step], 0.1, time);
-          console.log("sequence", stepsRef.current);
         }
       },
       [stepIds],

@@ -1,14 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { Sequence } from "tone";
 
-type LampsProps = {
-  lampsRef: React.MutableRefObject<HTMLInputElement[]>;
-};
-
-const Lamps = ({ lampsRef }: LampsProps) => {
+const Lamps = () => {
   const STEPS = 16;
   const seqRef = useRef<Sequence | null>(null);
-  const stepIds = [...Array(STEPS).keys()];
+  const stepIds = useMemo(() => [...Array(STEPS).keys()], [STEPS]);
+  const lampsRef = useRef<HTMLInputElement[]>([]);
 
   useEffect(() => {
     seqRef.current = new Sequence(
