@@ -27,7 +27,7 @@ const Step = ({ index, activeSteps, stepsRef, handleClick }: StepProps) => {
             }
             stepsRef.current[index] = elm;
           }}
-          onClick={() => handleClick(index, isActive)}
+          onChange={() => handleClick(index, isActive)}
           className={`step seq-element absolute`}
           checked={isActive}
         />
