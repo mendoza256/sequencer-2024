@@ -46,7 +46,7 @@ const Track = ({ note, rowIndex }: TrackProps) => {
 
   useEffect(() => {
     synth.current = new Synth().toDestination();
-    reverb.current = new Reverb(2).toDestination();
+    reverb.current = new Reverb(9).toDestination();
     synth.current.connect(reverb.current);
 
     reverb.current.generate();

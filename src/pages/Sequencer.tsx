@@ -18,7 +18,6 @@ const Sequencer = () => {
     } else {
       setScale(scale);
     }
-    console.log("scale", scale);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scale, isTablet, isMobile]);
 
