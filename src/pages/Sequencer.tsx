@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import Lamps from "../components/Lamps";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import scales from "../utils/scales";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 const Sequencer = () => {
   const [scale, setScale] = useState<string[]>(scales.CMajor);
@@ -21,25 +26,37 @@ const Sequencer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scale, isTablet, isMobile]);
 
-  function onScaleChange(e: React.ChangeEvent<HTMLSelectElement>) {
+  function onScaleChange(e: SelectChangeEvent<string>): void {
     const selectedScale = e.target.value;
 
     setScale(scales[selectedScale]);
   }
 
   return (
-    <>
-      <select onChange={onScaleChange}>
-        {Object.keys(scales).map((scale) => (
-          <option key={scale}>{scale}</option>
-        ))}
-      </select>
+    <div className="container mx-auto">
+      <FormControl sx={{ minWidth: 120 }} size="small">
+        <InputLabel id="select-scale-label">Scale</InputLabel>
+        <Select
+          labelId="select-scale-select"
+          id="scale-select"
+          value={Object.keys(scales).find((key) => scales[key] === scale)}
+          label="Age"
+          onChange={onScaleChange}
+        >
+          {Object.keys(scales).map((scale) => (
+            <MenuItem value={scale} key={scale}>
+              {scale}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
       {scale?.map((note, index) => (
         <Track key={index} note={note} rowIndex={index} />
       ))}
       <Lamps />
       <TransportSection />
-    </>
+    </div>
   );
 };
 
