@@ -3,17 +3,17 @@ import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import ThemeToggle from "./ThemeToggle";
 
 const Menu = () => {
   const [open, setOpen] = useState(false);
   const [modal, setModal] = useState("signUp");
   const handleClose = () => setOpen(false);
 
-  console.log("OPEN", open);
-
   return (
     <>
       <div className="fixed top-0 w-full flex justify-end gap-4 p-4">
+        <ThemeToggle />
         <Button
           variant="contained"
           onClick={() => {
