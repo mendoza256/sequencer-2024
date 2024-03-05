@@ -80,7 +80,8 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background-color: $black;
+  border-width: 1px;
+  border-style: solid;
 
   svg {
     transition: all 0.2s ease-in-out;

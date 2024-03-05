@@ -1,23 +1,30 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { createContext, useMemo, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
-export const ColorModeContext = createContext({ toggleColorMode: () => {} });
+export const ColorModeContext = createContext({
+  mode: "light" as "light" | "dark",
+  setMode: (() => {}) as Dispatch<SetStateAction<"light" | "dark">>,
+  toggleColorMode: () => {},
+});
 
 export const ColorModeProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [mode, setMode] = useState<"light" | "dark">("light");
-  const colorMode = useMemo(
-    () => ({
-      toggleColorMode: () => {
-        console.log("COLOR CHANGE");
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
-      },
-    }),
-    []
-  );
+  const [mode, setMode] = useState<"light" | "dark">("dark");
+
+  function toggleColorMode() {
+    console.log("previous mode", mode);
+    setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+  }
 
   const theme = useMemo(
     () =>
@@ -54,9 +61,18 @@ export const ColorModeProvider = ({
   );
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
+    <ColorModeContext.Provider value={{ mode, setMode, toggleColorMode }}>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
-      {/* {children} */}
     </ColorModeContext.Provider>
   );
 };
+
+export function useThemeContext() {
+  const context = useContext(ColorModeContext);
+  if (!context) {
+    throw new Error(
+      "useTransport must be used within a TransportContextProvider"
+    );
+  }
+  return context;
+}

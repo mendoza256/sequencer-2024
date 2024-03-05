@@ -1,16 +1,20 @@
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
-import { useContext } from "react";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import IconButton from "@mui/material/IconButton";
-import { ColorModeContext } from "../contexts/theme-mode-context";
+import { useThemeContext } from "../contexts/theme-mode-context";
 
 const ThemeToggle = () => {
   const theme = useTheme();
-  const colorMode = useContext(ColorModeContext);
-  const { toggleColorMode } = colorMode;
+  const { mode, toggleColorMode } = useThemeContext();
 
+  // function toggleColorMode() {
+  //   console.log("previous mode", mode);
+  //   setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+  // }
+
+  console.log("mode", mode);
   return (
     <Box
       sx={{
@@ -21,11 +25,11 @@ const ThemeToggle = () => {
         bgcolor: "background.default",
         color: "text.primary",
         borderRadius: 1,
-        p: 3,
       }}
+      onClick={toggleColorMode}
     >
       {theme.palette.mode} mode
-      <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
+      <IconButton sx={{ ml: 1 }} color="inherit">
         {theme.palette.mode === "dark" ? (
           <Brightness7Icon />
         ) : (
