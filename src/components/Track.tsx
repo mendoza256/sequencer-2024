@@ -100,8 +100,10 @@ const Track = ({ note, rowIndex }: TrackProps) => {
       <div
         role="button"
         tabIndex={0}
-        className="flex flex-col items-center relative seq-element clear-button relative"
+        className="flex flex-col items-center relative seq-element clear-button"
         onClick={clearRow}
+        // assign inline style border color from theme
+        style={{ borderColor: "rgba(255, 255, 255, 0.5)" }}
       >
         <RemoveIcon />
         <div className={`clear-icon-overlay absolute seq-element `}></div>

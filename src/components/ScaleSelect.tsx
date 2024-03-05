@@ -3,6 +3,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import scales from "../utils/scales";
+import { Palette } from "@mui/icons-material";
 
 interface ScaleSelectProps {
   scale: string[];
@@ -16,9 +17,18 @@ const ScaleSelect = ({ scale, setScale }: ScaleSelectProps) => {
   }
 
   return (
-    <FormControl sx={{ width: 120 }} size="small">
-      <InputLabel id="select-scale-label">Scale</InputLabel>
+    <FormControl
+      sx={{ width: 120, color: (theme) => theme.palette.primary.light }}
+      size="small"
+    >
+      <InputLabel
+        sx={{ color: (theme) => theme.palette.primary.contrastText }}
+        id="select-scale-label"
+      >
+        Scale
+      </InputLabel>
       <Select
+        sx={{ color: (theme) => theme.palette.primary.contrastText }}
         labelId="select-scale-select"
         id="scale-select"
         value={Object.keys(scales).find((key) => scales[key] === scale)}
