@@ -5,6 +5,7 @@ import { Frequency } from "tone/build/esm/core/type/Units";
 import { useSessionStorage } from "../hooks/useSessionStorage";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { FrequencyOrNull } from "../utils/baseTypes";
+import useTheme from "@mui/material/styles/useTheme";
 
 type TrackProps = {
   note: FrequencyOrNull;
@@ -29,6 +30,7 @@ const Track = ({ note, rowIndex }: TrackProps) => {
   const seqRef = useRef<Sequence | null>(null);
   const stepsRef = useRef<HTMLInputElement[]>([]);
   const stepIds = [...Array(STEPS).keys()];
+  const theme = useTheme();
 
   function clearRow() {
     setActiveSteps((prev: FrequencyOrNull[]) => {
@@ -102,8 +104,8 @@ const Track = ({ note, rowIndex }: TrackProps) => {
         tabIndex={0}
         className="flex flex-col items-center relative seq-element clear-button"
         onClick={clearRow}
-        // assign inline style border color from theme
-        style={{ borderColor: "rgba(255, 255, 255, 0.5)" }}
+        // FIXME theme colors are not from context
+        style={{ borderColor: theme.palette.primary.light }}
       >
         <RemoveIcon />
         <div className={`clear-icon-overlay absolute seq-element `}></div>
