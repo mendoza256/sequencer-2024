@@ -6,19 +6,38 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import CssBaseline from "@mui/material/CssBaseline";
-import {
-  ColorModeContext,
-  useThemeContext,
-} from "./contexts/theme-mode-context";
+import { ColorModeContext } from "./contexts/theme-mode-context";
+import { PaletteMode, ThemeProvider, createTheme } from "@mui/material";
+import { useMemo, useState } from "react";
+import { getDesignTokens } from "./utils/lightDarkMode";
 
 function App() {
-  const { mode, setMode, toggleColorMode } = useThemeContext();
+  const [mode, setMode] = useState<PaletteMode>("light");
+
+  // Update the theme only if the mode changes
+  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  const colorMode = useMemo(
+    () => ({
+      // The dark mode switch would invoke this method
+      toggleColorMode: () => {
+        setMode((prevMode: PaletteMode) =>
+          prevMode === "light" ? "dark" : "light"
+        );
+      },
+      mode,
+      setMode,
+      theme,
+    }),
+    []
+  );
 
   return (
-    <ColorModeContext.Provider value={{ mode, setMode, toggleColorMode }}>
-      <CssBaseline />
-      <Menu />
-      <Sequencer />
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Menu />
+        <Sequencer />
+      </ThemeProvider>
     </ColorModeContext.Provider>
   );
 }
