@@ -9,11 +9,6 @@ const ThemeToggle = () => {
   const theme = useTheme();
   const { mode, toggleColorMode } = useThemeContext();
 
-  // function toggleColorMode() {
-  //   console.log("previous mode", mode);
-  //   setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
-  // }
-
   console.log("mode", mode);
   return (
     <Box

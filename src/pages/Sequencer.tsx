@@ -12,13 +12,16 @@ const Sequencer = () => {
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   useEffect(() => {
-    if (isMobile) {
-      setScale(scale.slice(0, 4));
-    } else if (isTablet) {
-      setScale(scale.slice(0, 6));
-    } else {
-      setScale(scale);
-    }
+    setScale(scale.slice(0, 1));
+
+    // FIXME add back when performance is better
+    // if (isMobile) {
+    //   setScale(scale.slice(0, 4));
+    // } else if (isTablet) {
+    //   setScale(scale.slice(0, 6));
+    // } else {
+    //   setScale(scale);
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scale, isTablet, isMobile]);
 
