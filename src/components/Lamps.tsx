@@ -2,7 +2,7 @@ import { useEffect, useRef, useMemo } from "react";
 import { Sequence } from "tone";
 
 const Lamps = () => {
-  const STEPS = 16;
+  const STEPS = 16 as const;
   const seqRef = useRef<Sequence | null>(null);
   const stepIds = useMemo(() => [...Array(STEPS).keys()], [STEPS]);
   const lampsRef = useRef<HTMLInputElement[]>([]);
