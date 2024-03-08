@@ -18,7 +18,6 @@ function App() {
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   const colorMode = useMemo(
     () => ({
-      // The dark mode switch would invoke this method
       toggleColorMode: () => {
         setMode((prevMode: PaletteMode) =>
           prevMode === "light" ? "dark" : "light"
@@ -28,7 +27,8 @@ function App() {
       setMode,
       theme,
     }),
-    []
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [theme]
   );
 
   return (

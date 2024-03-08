@@ -21,8 +21,8 @@ function Copyright(props: any) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://github.com/mendoza256">
+        github.com/mendoza256
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -41,7 +41,19 @@ export default function SignIn() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        boxShadow: 8,
+        p: 4,
+        margin: "auto",
+        marginTop: 24,
+        backgroundColor: (theme) => theme.palette.primary.contrastText,
+        opacity: 1,
+        borderRadius: 2,
+      }}
+    >
       <CssBaseline />
       <Box
         sx={{
@@ -92,26 +104,18 @@ export default function SignIn() {
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="By signing up you agree to our terms and conditions."
+          />
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            Sign Up
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />

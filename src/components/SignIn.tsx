@@ -21,8 +21,8 @@ function Copyright(props: any) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://github.com/mendoza256">
+        github.com/mendoza256
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -41,7 +41,19 @@ export default function SignIn() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        boxShadow: 8,
+        p: 4,
+        margin: "auto",
+        marginTop: 24,
+        backgroundColor: (theme) => theme.palette.primary.contrastText,
+        opacity: 1,
+        borderRadius: 2,
+      }}
+    >
       <CssBaseline />
       <Box
         sx={{

@@ -40,7 +40,7 @@ const Menu = () => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        className="bg-white p-4 rounded-md w-96 h-96 mx-auto mt-24"
+        // className="bg-white p-4 rounded-md w-96 h-min mx-auto mt-24"
       >
         <>
           {modal === "signIn" && <SignIn />}

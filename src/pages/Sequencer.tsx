@@ -23,7 +23,10 @@ const Sequencer = () => {
     //   setScale(scale);
     // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scale, isTablet, isMobile]);
+    // }, [scale, isTablet, isMobile]);
+
+    // FIXME adding scale to the dependency array causes the sequencer to re-render on every scale change
+  }, [isTablet, isMobile]);
 
   return (
     <section className="p-8">
