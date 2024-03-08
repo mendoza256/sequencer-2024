@@ -10,7 +10,6 @@ export const getDesignTokens = (mode: PaletteMode) => ({
             light: "#7d83fd",
             main: "#646cff",
             dark: "#3f48f8",
-            text: "#000000DE",
             contrastText: "#ffffffDE",
           },
         }
@@ -20,7 +19,6 @@ export const getDesignTokens = (mode: PaletteMode) => ({
             light: "#c1e3ff",
             main: "#74c0ff",
             dark: "#3884de",
-            text: "#ffffffDE",
             contrastText: "#242424",
           },
         }),

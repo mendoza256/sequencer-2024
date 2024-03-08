@@ -5,42 +5,42 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import scales from "../utils/scales";
 
 interface ScaleSelectProps {
-  scale: string[];
-  setScale: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedScale: string[];
+  setSelectedScale: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const ScaleSelect = ({ scale, setScale }: ScaleSelectProps) => {
+const ScaleSelect = ({ selectedScale, setSelectedScale }: ScaleSelectProps) => {
   function onScaleChange(e: SelectChangeEvent<string>): void {
     const selectedScale = e.target.value;
-    setScale(scales[selectedScale]);
+    setSelectedScale(scales[selectedScale]);
   }
 
   return (
     <FormControl
-      sx={{ width: 120, color: (theme) => theme.palette.primary.text }}
+      sx={{ width: 120, color: (theme) => theme.palette.primary.dark }}
       size="small"
     >
       <InputLabel
-        sx={{ color: (theme) => theme.palette.primary.text }}
+        sx={{ color: (theme) => theme.palette.primary.dark }}
         id="select-scale-label"
       >
-        {Object.keys(scales).find((key) => scales[key] === scale)}
+        Scale
       </InputLabel>
       <Select
-        sx={{ color: (theme) => theme.palette.primary.text }}
+        sx={{ color: (theme) => theme.palette.primary.dark }}
         labelId="select-scale-select"
         id="scale-select"
-        value={"value"}
+        value={selectedScale}
         label="Age"
         onChange={() => onScaleChange}
       >
-        {Object.keys(scales).map((scale) => (
+        {Object.keys(scales).map((scaleName) => (
           <MenuItem
-            value={Object.keys(scales).find((key) => scales[key] === scale)}
-            key={scale}
-            sx={{ color: (theme) => theme.palette.primary.text }}
+            value={scaleName}
+            key={scaleName}
+            sx={{ color: (theme) => theme.palette.primary.dark }}
           >
-            {scale}
+            {scaleName}
           </MenuItem>
         ))}
       </Select>
