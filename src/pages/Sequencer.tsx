@@ -3,19 +3,25 @@ import Track from "../components/Track";
 import { useEffect, useState } from "react";
 import Lamps from "../components/Lamps";
 import { useMediaQuery } from "../hooks/useMediaQuery";
-import scales from "../utils/scales";
+import scales, { Scale } from "../utils/scales";
 import ScaleSelect from "../components/ScaleSelect";
 
 const Sequencer = () => {
-  const [selectedScale, setSelectedScale] = useState<string[]>(scales.CMajor);
+  const [selectedScale, setSelectedScale] = useState<Scale>(scales[0]);
   const isTablet = useMediaQuery("(max-width: 1023px)");
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   useEffect(() => {
     if (isMobile) {
-      setSelectedScale(selectedScale.slice(0, 4));
+      setSelectedScale({
+        ...selectedScale,
+        value: selectedScale.value.slice(0, 4),
+      });
     } else if (isTablet) {
-      setSelectedScale(selectedScale.slice(0, 6));
+      setSelectedScale({
+        ...selectedScale,
+        value: selectedScale.value.slice(0, 6),
+      });
     } else {
       setSelectedScale(selectedScale);
     }
@@ -26,7 +32,7 @@ const Sequencer = () => {
     <section className="p-8">
       <div className="container mx-auto mt-24 flex items-center justify-center flex-col">
         <div className="grid-container">
-          {selectedScale?.map((note, index) => (
+          {selectedScale?.value.map((note, index) => (
             <Track key={index} note={note} rowIndex={index} />
           ))}
           <Lamps />
