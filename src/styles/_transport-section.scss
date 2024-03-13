@@ -4,6 +4,12 @@
   svg path {
     fill: white;
   }
+
+  &.dark {
+    svg path {
+      fill: $black;
+    }
+  }
 }
 
 .bpm-value {
