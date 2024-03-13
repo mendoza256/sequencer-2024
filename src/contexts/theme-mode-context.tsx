@@ -1,5 +1,4 @@
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { createContext, Dispatch, SetStateAction, useContext } from "react";
+import { createContext, useContext } from "react";
 
 export const ColorModeContext = createContext({});
 

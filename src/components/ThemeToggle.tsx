@@ -5,9 +5,14 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import IconButton from "@mui/material/IconButton";
 import { useThemeContext } from "../contexts/theme-mode-context";
 
+export type ThemeContextType = {
+  mode: string;
+  toggleColorMode: () => void;
+};
+
 const ThemeToggle = () => {
   const theme = useTheme();
-  const { mode, toggleColorMode } = useThemeContext();
+  const { mode, toggleColorMode } = useThemeContext() as ThemeContextType;
 
   console.log("mode", mode);
   return (
