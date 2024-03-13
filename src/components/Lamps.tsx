@@ -1,3 +1,4 @@
+import { useTheme } from "@mui/material/styles";
 import { useEffect, useRef, useMemo } from "react";
 import { Sequence } from "tone";
 
@@ -6,6 +7,7 @@ const Lamps = () => {
   const seqRef = useRef<Sequence | null>(null);
   const stepIds = useMemo(() => [...Array(STEPS).keys()], [STEPS]);
   const lampsRef = useRef<HTMLInputElement[]>([]);
+  const theme = useTheme();
 
   useEffect(() => {
     seqRef.current = new Sequence(
@@ -27,7 +29,11 @@ const Lamps = () => {
     <div className="flex items-center justify-between gap-4 mr-12">
       {stepIds.map((_, i) => (
         <div className="flex flex-col" key={i}>
-          <label className="light seq-element relative">
+          <label
+            className={`light seq-element relative ${
+              theme.palette.mode === "light" ? "light" : "dark"
+            }`}
+          >
             <input
               type="radio"
               name="lamp"

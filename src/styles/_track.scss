@@ -48,9 +48,15 @@
 .light {
   .light__inner {
     border-radius: 50%;
-    background-color: #ffffff50;
+    background-color: #00000016;
     width: 2rem;
     height: 2rem;
+  }
+
+  &.dark {
+    .light__inner {
+      background-color: rgba(255, 255, 255, 0.556);
+    }
   }
 
   input.light__inner {

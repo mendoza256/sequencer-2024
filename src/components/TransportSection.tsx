@@ -3,10 +3,12 @@ import { useTransportContext } from "../contexts/transport-context";
 import { useEffect, useState } from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
+import { useTheme } from "@mui/material/styles";
 
 const TransportSection = () => {
   const { isPlaying, toggleGlobalTransportState } = useTransportContext();
   const [bpmValue, setBpmValue] = useState(Math.floor(Transport.bpm.value));
+  const theme = useTheme();
 
   useEffect(() => {
     Destination.volume.value = gainToDb(0.4);
@@ -30,7 +32,12 @@ const TransportSection = () => {
 
   return (
     <div className="transport-section flex justify-between items-center mt-4 mr-12">
-      <button className="play-pause-btn" onClick={handlePlay}>
+      <button
+        className={`play-pause-btn ${
+          theme.palette.mode === "light" ? "light" : "dark"
+        }`}
+        onClick={handlePlay}
+      >
         {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
       </button>
       <label className="flex justify-between items-center">
