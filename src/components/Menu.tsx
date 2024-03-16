@@ -1,52 +1,74 @@
 import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import { useState } from "react";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
 import ThemeToggle from "./ThemeToggle";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Box } from "@mui/material";
 
 const Menu = () => {
-  const [open, setOpen] = useState(false);
-  const [modal, setModal] = useState("signUp");
-  const handleClose = () => setOpen(false);
+  // isAuthenticated, isLoading neeed?
+  const { user, loginWithRedirect, logout } = useAuth0();
+
+  function handleSaveSequence() {
+    const userId = user?.sub;
+    const sequence = JSON.parse(localStorage.getItem("sequence") || "[]");
+    const sequenceName = prompt("Enter a name for this sequence");
+    if (sequenceName) {
+      fetch("http://localhost:8080/save-sequence", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          sequenceName,
+          sequence,
+        }),
+      })
+        .then((response) => response.json())
+        .then(() => {
+          alert("Sequence saved!");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }
 
   return (
     <>
       <div className="fixed top-0 w-full flex justify-end gap-4 p-4">
+        <Box
+          sx={{
+            display: "flex",
+            minWidth: "100px",
+            alignItems: "center",
+            justifyContent: "center",
+            bgcolor: "background.default",
+            color: "text.primary",
+            borderRadius: 1,
+          }}
+        >
+          <span>{user ? "Hi " + user?.given_name : "Hi there!"}</span>
+        </Box>
         <ThemeToggle />
-        <Button
-          variant="contained"
-          onClick={() => {
-            setModal("signIn");
-            setOpen(true);
-          }}
-        >
-          Login
-        </Button>
-        <Button variant="contained">Logout</Button>
-        <Button
-          variant="contained"
-          onClick={() => {
-            setModal("signUp");
-            setOpen(true);
-          }}
-        >
-          Sign Up
-        </Button>
-        <Button variant="contained">Save Sequence</Button>
+        {!user ? (
+          <Button onClick={() => loginWithRedirect()} variant="contained">
+            Login/Sign Up
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            onClick={() => () =>
+              logout({ logoutParams: { returnTo: "http://localhost:5173/" } })}
+          >
+            Logout
+          </Button>
+        )}
+        {user && (
+          <Button variant="contained" onClick={handleSaveSequence}>
+            Save Sequence
+          </Button>
+        )}
       </div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        // className="bg-white p-4 rounded-md w-96 h-min mx-auto mt-24"
-      >
-        <>
-          {modal === "signIn" && <SignIn />}
-          {modal === "signUp" && <SignUp />}
-        </>
-      </Modal>
     </>
   );
 };

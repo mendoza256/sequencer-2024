@@ -10,8 +10,11 @@ import { ColorModeContext } from "./contexts/theme-mode-context";
 import { PaletteMode, ThemeProvider, createTheme } from "@mui/material";
 import { useMemo, useState } from "react";
 import { getDesignTokens } from "./utils/lightDarkMode";
+import { Auth0Provider } from "@auth0/auth0-react";
 
 function App() {
+  const domain = import.meta.env.VITE_AUTH_DOMAIN as string;
+  const clientId = import.meta.env.VITE_AUTH_CLIENT_ID as string;
   const [mode, setMode] = useState<PaletteMode>("light");
 
   // Update the theme only if the mode changes
@@ -32,13 +35,21 @@ function App() {
   );
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Menu />
-        <Sequencer />
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+    <Auth0Provider
+      domain={domain}
+      clientId={clientId}
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+      }}
+    >
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Menu />
+          <Sequencer />
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    </Auth0Provider>
   );
 }
 

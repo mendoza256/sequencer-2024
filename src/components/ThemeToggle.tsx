@@ -12,9 +12,8 @@ export type ThemeContextType = {
 
 const ThemeToggle = () => {
   const theme = useTheme();
-  const { mode, toggleColorMode } = useThemeContext() as ThemeContextType;
+  const { toggleColorMode } = useThemeContext() as ThemeContextType;
 
-  console.log("mode", mode);
   return (
     <Box
       sx={{
